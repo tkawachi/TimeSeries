@@ -4,7 +4,7 @@ import           Safe.Exact (takeExactMay)
 
 -- | Moving Average
 class MA a where
-    ma :: a -> [Double] -> [Maybe Double]
+    ma :: Floating b => a -> [b] -> [Maybe b]
 
 -- | Simple Moving Average
 data SMA = SMA { smaShift :: Int }
@@ -17,7 +17,7 @@ instance MA SMA where
             ma' (a @ (_ : xs')) =  ((takeExactMay shift a) >>= average) : ma' xs'
 
 -- | Average
-average :: (Num a, Fractional a) => [a] -> Maybe a
+average :: Fractional a => [a] -> Maybe a
 average [] = Nothing
 average xs = Just $ sum xs / fromIntegral (length xs)
 
